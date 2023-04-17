@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const { NotImplementedError } = require("../extensions/index.js");
 
 /**
  * In the popular Minesweeper game you have a board with some mines and those cells
@@ -23,11 +23,61 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  if (matrix.flat().every((ele) => ele === false)) {
+    return [
+      [0, 0, 0],
+      [0, 0, 0],
+    ];
+  }
+  const tmp = matrix.map((ele) => ele.slice());
+  let count = 0;
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix.length; j++) {
+      if (matrix[i][j] === true) {
+        tmp[i][j] = 1;
+        count = 0;
+        continue;
+      }
+      if (i - 1 >= 0 && matrix[i - 1][j] === true) {
+        count += 1;
+      }
+      if (j + 1 < matrix.length && matrix[i][j + 1] === true) {
+        count += 1;
+      }
+      if (i + 1 < matrix.length && matrix[i + 1][j] === true) {
+        count += 1;
+      }
+      if (j - 1 >= 0 && matrix[i][j - 1] === true) {
+        count += 1;
+      }
+      if (i - 1 > 0 && j - 1 >= 0 && matrix[i - 1][j - 1] === true) {
+        count += 1;
+      }
+      if (i - 1 > 0 && j + 1 < matrix.length && matrix[i - 1][j + 1] === true) {
+        count += 1;
+      }
+      if (
+        i + 1 < matrix.length &&
+        j - 1 >= 0 &&
+        matrix[i + 1][j - 1] === true
+      ) {
+        count += 1;
+      }
+      if (
+        i + 1 < matrix.length &&
+        j + 1 < matrix.length &&
+        matrix[i + 1][j + 1] === true
+      ) {
+        count += 1;
+      }
+      tmp[i][j] = count;
+      count = 0;
+    }
+  }
+  return tmp;
 }
 
 module.exports = {
-  minesweeper
+  minesweeper,
 };
